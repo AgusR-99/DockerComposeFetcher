@@ -9,6 +9,10 @@ read -p "Enter the URL of the remote repository: " repo_url
 # Prompt for branch name
 read -p "Enter the branch name to fetch from: " branch_name
 
+# Prompt for the YML file path (default to docker-compose.yml)
+read -p "Enter the path to the YML file to fetch [default: docker-compose.yml]: " yml_file
+yml_file=${yml_file:-docker-compose.yml}
+
 # Initialize a new Git repository in the specified directory
 git init "$dir_name"
 
@@ -21,8 +25,8 @@ git remote add origin "$repo_url"
 # Enable sparse checkout
 git config core.sparseCheckout true
 
-# Specify the docker-compose.yml file to check out
-echo "/docker-compose.yml" > .git/info/sparse-checkout
+# Specify the file to check out
+echo "/$yml_file" > .git/info/sparse-checkout
 
 # Fetch and check out the specific branch with sparse checkout
 git fetch origin "$branch_name"
